@@ -18,6 +18,19 @@ export const reducer = (state, action) => {
         };
     case SET_STEP:
         if (typeof action.payload === 'number') {
+            if (action.payload === steps.QuestionView.length){
+                return {
+                    ...state,
+                    actualStep: action.payload,
+                    isLastQuestion: true,
+                };
+            }else if(action.payload === steps.QuestionView[0]){
+                return {
+                    ...state,
+                    actualStep: action.payload,
+                    isFirstQuestion: true,
+                };
+            }
             return {
                 ...state,
                 actualStep: action.payload,

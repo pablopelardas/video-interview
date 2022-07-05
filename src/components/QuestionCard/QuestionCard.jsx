@@ -1,13 +1,11 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import s from './QuestionCard.module.css';
-import { AppContext } from '../../context/AppContext';
-const QuestionCard = () => {
+import PropTypes from 'prop-types';
 
-    // eslint-disable-next-line no-unused-vars
-    const [state,dispatch] = useContext(AppContext);
+const QuestionCard = ({question, dispatch}) => {
 
     const handleClick = () => {
-        dispatch({type: 'SET_STEP', payload: 'next'});
+        dispatch({type: 'SET_STEP', payload: question.id});
     };
 
     return (
@@ -16,10 +14,19 @@ const QuestionCard = () => {
                 {/* Video */}
             </div>
             <div className={s.question}>
-                <p>la pregunta</p>
+                <p>{question.message}</p>
             </div>
         </article>
     );
+};
+
+QuestionCard.propTypes = {
+    question: PropTypes.shape({
+        id: PropTypes.number,
+        message: PropTypes.string,
+        isAnswered: PropTypes.bool,
+    }),
+    dispatch: PropTypes.func,
 };
 
 export default QuestionCard;
