@@ -1,5 +1,5 @@
 import { questionsMock, steps } from '../constants';
-import { SET_QUESTIONS, SET_STEP, SET_IS_ANSWERED } from './action-types';
+import { SET_QUESTIONS, SET_STEP, SET_IS_ANSWERED, SET_VIDEO_ANSWER } from './action-types';
 
 export const initialState = {
     questions: questionsMock,
@@ -81,6 +81,20 @@ export const reducer = (state, action) => {
                 }
                 return question;
             }),
+        };
+    case SET_VIDEO_ANSWER:
+        return {
+            ...state,
+            questions: state.questions.map(question => {
+                if (question.id === action.payload.id) {
+                    return {
+                        ...question,
+                        answer: action.payload.answer,
+                        isAnswered: action.payload.isAnswered,
+                    };
+                }
+                return question;
+            })
         };
     default:
         return state;
