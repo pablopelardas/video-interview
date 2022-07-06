@@ -2,6 +2,9 @@ import React, {useContext} from 'react';
 import QuestionButtons from '../../components/QuestionButtons/QuestionButtons';
 import {AppContext} from '../../context/AppContext';
 import { steps } from '../../constants';
+import s from './QuestionView.module.css';
+import aux from '../../components/QuestionButtons/QuestionButtons.module.css';
+import VideoRecorder from '../../components/VideoRecorder/VideoRecorder';
 
 const QuestionView = () => {
     // eslint-disable-next-line no-unused-vars
@@ -12,8 +15,9 @@ const QuestionView = () => {
     };
 
     return (
-        <section>
-            <button onClick={mainView}>Main View</button>
+        <section className={s.question_view_container}>
+            <button className={aux.button} onClick={mainView}>Main View</button>
+            <VideoRecorder />            
             <QuestionButtons/>
         </section>
     );
