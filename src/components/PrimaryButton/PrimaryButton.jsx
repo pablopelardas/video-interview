@@ -8,9 +8,9 @@ import CachedRoundedIcon from '@mui/icons-material/CachedRounded';
 const PrimaryButton = React.forwardRef((props,ref) => {
     const {text, onClick, disabled = false, video = false, icon} = props;
     const videoButton = {
-        Grabar: <PlayArrowIcon fontSize='large'/>,
-        Regrabar: <CachedRoundedIcon fontSize='large'/>,
-        Detener: <StopRoundedIcon fontSize='large'/>,
+        Grabar: <PlayArrowIcon className={s.icon} fontSize='large'/>,
+        Regrabar: <CachedRoundedIcon className={s.icon} fontSize='large'/>,
+        Detener: <StopRoundedIcon className={s.icon} fontSize='large'/>,
     };
     console.log(icon, video);
     return <button ref={ref || null} className={video ? s.video_button : s.button} onClick={onClick} disabled={disabled || false}>{video ? videoButton[icon] : text}</button>; 

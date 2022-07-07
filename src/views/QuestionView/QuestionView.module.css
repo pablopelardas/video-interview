@@ -7,6 +7,6 @@
   justify-content: center;
   width: 80vw;
   height: 80vh;
-  background-color: rgb(186, 187, 187);
+  background-color: var(--maing-bg-color);
   justify-content: space-around;
 }

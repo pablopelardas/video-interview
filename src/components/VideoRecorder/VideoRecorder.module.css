@@ -30,11 +30,12 @@
 
 .buttons_container{
   position: absolute;
-  bottom: 10%;
+  bottom: 15%;
   display: flex;
   width: 100%;
   justify-content: space-between;
   gap: 40px;
   align-items: center;
+  padding-left: 15px;
 }
 

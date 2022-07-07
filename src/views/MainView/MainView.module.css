@@ -4,9 +4,9 @@
   flex-direction: column;
   margin-top: 100px;
   align-items: center;
-  min-height: 100vh;
+  height: auto;
   width: 80vw;
-  background-color: rgb(186, 187, 187);
+  background-color: var(--maing-bg-color);
 }
 
 .card_container{
