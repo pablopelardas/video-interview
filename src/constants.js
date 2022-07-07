@@ -3,25 +3,25 @@ export const questionsMock = [
         id: 1,
         message: '¿Cuál es tu video juego favorito de la infancia?',
         isAnswered: false,
-        answer: ''
+        answer: []
     },
     {
         id: 2,
         message: '¿Cuál es tu video juego favorito de la infancia?',
         isAnswered: false,
-        answer: ''
+        answer: []
     },
     {
         id: 3,
         message: '¿Cuál es tu video juego favorito de la infancia?',
         isAnswered: false,
-        answer: ''
+        answer: []
     },
     {
         id: 4,
         message: '¿Cuál es tu video juego favorito de la infancia?',
         isAnswered: false,
-        answer: ''
+        answer: []
     },
 ];
 
