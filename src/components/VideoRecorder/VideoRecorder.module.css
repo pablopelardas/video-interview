@@ -30,7 +30,7 @@
 
 .buttons_container{
   position: absolute;
-  bottom: 15%;
+  bottom: 2%;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -39,3 +39,48 @@
   padding-left: 15px;
 }
 
+.skeleton{
+  min-width: 350px;
+  min-height: 500px;
+  width: 50%;
+  height: auto;
+}
+
+.buttons_container button{
+  z-index: 1;
+}
+
+.timer_container{
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 100%;
+  height: auto;
+
+}
+
+.timer{
+  font-size: 2rem;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #000000;
+  color: white;
+  border: 0px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.096);  
+}
+
+.recording_circle{  
+  display: block;
+  background-color: red;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  animation: blinker 0.75s cubic-bezier(.5, 0, 1, 1) infinite alternate; 
+}
+@keyframes blinker {  
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

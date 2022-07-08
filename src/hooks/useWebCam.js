@@ -1,15 +1,15 @@
 import {useState, useEffect, useRef, useContext} from 'react';
 import {AppContext} from '../context/AppContext.jsx';
-import { SET_VIDEO_ANSWER } from '../context/action-types.js';
+import { SET_LOADING, SET_RECORDING, SET_VIDEO_ANSWER } from '../context/action-types.js';
  
 
 
 const useWebCam = () => {
     const [state, dispatch] = useContext(AppContext);
     const [buttonState, setButtonState] = useState('Grabar');
+    const [timer,  setTimer] = useState(0);
     const buttonRef = useRef(null);
     const videoRef = useRef(null);
-    const recordedRef = useRef(null);
     const streamRef = useRef(null);
     const streamRecorderRef = useRef(null);
     const recordTimerRef = useRef(null);
@@ -17,12 +17,12 @@ const useWebCam = () => {
     const [videoSource] = useState(null);
     const [error, setError] = useState(null);
     const [isRecording, setIsRecording] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const playingRef = useRef(null);
     const chunks = useRef([]);
     const actualQuestion = state.questions[state.actualStep-1];
 
-
     const prepareStream = async () => {
-        if (buttonRef.current) buttonRef.current.disabled = true;
         const gotStream = (stream) =>{
             streamRef.current = stream;
             if(videoRef.current){
@@ -32,6 +32,7 @@ const useWebCam = () => {
         };
 
         const getStream = async () => {
+            if (buttonRef.current) buttonRef.current.disabled = true;
             if (streamRef.current){
                 streamRef.current.getTracks().forEach(track => track.stop());
             }
@@ -46,21 +47,26 @@ const useWebCam = () => {
                 setError(e);
             }
         };
-        if (actualQuestion.answer.length > 0){
-            chunks.current = [];
-            if (buttonRef.current) buttonRef.current.disabled = false;
-            return play();
-        }else{
-            recordedRef.current = null;
-            await getStream();
-            if (buttonRef.current) buttonRef.current.disabled = false;
-        }
+        await getStream().then(() => {
+            dispatch({type: SET_LOADING, payload: false});
+            if (actualQuestion?.isAnswered) play();
+            buttonRef.current.disabled = false;
+        });
     };
 
-    const handleButtonClick = async () => {
+    const handleButtonClick = () => {
+        console.log('click');
         if (!buttonRef.current) return;
-        if (buttonState === 'Regrabar') return handleRecord();
-        if (!actualQuestion.isAnswered) handleRecord();
+        if (buttonState === 'Regrabar'){
+            dispatch({type: SET_VIDEO_ANSWER, payload: {id: state.actualStep, isAnswered: false, answer: ''}});
+            videoRef.current.src = null;
+            setTimer(0);
+            setIsPlaying(false);
+            clearInterval(playingRef.current);
+            // await prepareStream(true);
+        }  
+        handleRecord();
+          
     };
 
     const handleRecord = async () => {
@@ -69,71 +75,115 @@ const useWebCam = () => {
     };
 
     const startRecording = async () => {
-        dispatch({type: SET_VIDEO_ANSWER, payload: {id: state.actualStep, isAnswered: false, answer: ''}});
-        setButtonState('Detener');
         chunks.current = [];
-        await prepareStream();
+        clearInterval(recordTimerRef.current);
+        setTimer(0);
+        // await prepareStream();
         if (isRecording) return;
         if (!streamRef.current) return;
+        console.log('llego hasta aca');
+        if (!videoRef.current) return;
         videoRef.current.srcObject = streamRef.current;
         videoRef.current.controls = false;
-
+        
         streamRecorderRef.current = new MediaRecorder(streamRef.current);
         streamRecorderRef.current.start();
         streamRecorderRef.current.ondataavailable = (e) => {
             if (chunks.current) chunks.current.push(e.data);
         };
         setIsRecording(true);
-        recordTimerRef.current = setTimeout(() => {
-            alert('Se ha superado el tiempo de grabación');
-            stopRecording();
-        },1000 * 60 * 2); // 2 minutes
+        setButtonState('Detener');
     };
     const stopRecording = async () => {
         if (!streamRecorderRef.current)return;
         streamRecorderRef.current.stop();
-        clearTimeout(recordTimerRef.current);
         setIsRecording(false);
-        await dispatch({type: SET_VIDEO_ANSWER, payload: {id: state.actualStep, isAnswered: true, answer: chunks.current}});
+        clearInterval(recordTimerRef.current);
+        await dispatch({type: SET_VIDEO_ANSWER, payload: {id: state.actualStep, isAnswered: true, answer: chunks.current, duration: timer}});
         setButtonState('Regrabar');
-        play(chunks.current);
+        streamRecorderRef.current = null;
     };
 
     const play = async () => {
         const blob = new Blob(actualQuestion.answer, {type: 'video/webm'});
-        if (!recordedRef.current) return;
-        recordedRef.current.src = null;
-        recordedRef.current.srcObject = null;
-        recordedRef.current.src = URL.createObjectURL(blob);
-        recordedRef.current.controls= true;
-        recordedRef.current.play();
+        if (!videoRef.current) return;
+        videoRef.current.src = null;
+        videoRef.current.srcObject = null;
+        videoRef.current.src = URL.createObjectURL(blob);
+        videoRef.current.controls= false;
+        videoRef.current.muted = false;
+        setIsPlaying(true);
+        setTimer(0);
+        videoRef.current.play();
+    };
+
+    const replay = () => {
+        if (!videoRef.current.src) return;
+        setIsPlaying(true);
+        setTimer(0);
+        videoRef.current.play();
     };
 
     useEffect(() => {
+        dispatch({type: SET_LOADING, payload: true});
         prepareStream();
-        actualQuestion.isAnswered ? setButtonState('Regrabar') : setButtonState('Grabar');
-        return () => {
-            if (streamRef.current){
-                streamRef.current.getTracks().forEach(track => track.stop());
-            }
-        };
-    },[state.actualStep]);
+        videoRef.current.srcObject = streamRef.current;
+    },[]);
 
     useEffect(() => {
-        if (!buttonRef.current) return;
-    }, [buttonState]);
+        actualQuestion.isAnswered ? setButtonState('Regrabar') : setButtonState('Grabar');
+        setTimer(0);
+        setIsPlaying(false);
+        clearInterval(playingRef.current);
+        videoRef.current.srcObject = streamRef.current;
+    },[state.actualStep]);
+
 
     useEffect(() => {
         const int = setInterval(() => {
-            if (actualQuestion.isAnswered) {
+            if (actualQuestion?.isAnswered) {
                 clearInterval(int);
                 play();
             }
         }, 10);
         return () => clearInterval(int);
-    }, [actualQuestion.answer]);
+    }, [actualQuestion?.answer]);
 
-    return {buttonRef, videoRef, recordedRef, error, handleButtonClick, buttonState};
+    useEffect(() => {
+        if (isRecording) {
+            dispatch({type: SET_RECORDING, payload: true});
+            recordTimerRef.current = setInterval(() => {
+                setTimer(timer => timer + 1);
+            }, 1000);
+            if (timer === 120){
+                stopRecording();
+                setTimer(0);
+                clearInterval(recordTimerRef.current);
+            }
+        }
+        if (!isRecording) {
+            dispatch({type: SET_RECORDING, payload: false});
+            setTimer(0);
+            clearInterval(recordTimerRef.current);
+        }
+        return () => clearInterval(recordTimerRef.current);
+    },[isRecording]);
+
+    useEffect(() => {
+        if (isPlaying) {
+            playingRef.current = setInterval(() => {
+                setTimer(timer => timer + 1);
+                if (timer === actualQuestion.duration || videoRef.current.paused) {
+                    setTimer(actualQuestion.duration);
+                    clearInterval(playingRef.current);
+                    setIsPlaying(false);
+                }
+            }, 1000);
+            return () => clearInterval(playingRef.current);
+        }
+    },[isPlaying]);
+
+    return {buttonRef, videoRef, error, handleButtonClick, buttonState, replay, prepareStream, timer, isRecording};
 };
 
 export default useWebCam;

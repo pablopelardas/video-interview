@@ -6,7 +6,8 @@ const MainView = () => {
     const [state, dispatch] = useContext(AppContext);
     return (
         <section className={s.mainview_container}>
-            <h1>Video Cuestionario</h1>
+            <h1 className={s.main_title}>Video Cuestionario</h1>
+            <p className={s.instructions}>Clickea la carta que quieras empezar respondiendo, al responder todas podrás enviar tus respuestas.</p>
             <section className={s.card_container}>
                 {
                     state.questions.map(question => {

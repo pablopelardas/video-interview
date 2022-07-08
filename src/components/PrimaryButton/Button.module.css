@@ -4,20 +4,38 @@ button{
 
 .button{
   font-size: 2rem;
+  font-weight: bold;
   padding: 10px;
   border-radius: 5px;
+  color: #363232;
   background-color: rgb(248, 159, 159);
   border: 0px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.096); 
+}
+
+.main_title{
+  font-size: 4rem;
+  font-weight: bold;
+  color: white;
+  background-color: #fa8072a3;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
 }
 
 .video_button{
   font-size: 2rem;
   padding: 10px;
   border-radius: 5px;
-  background-color: #363232;
+  background-color: #000000;
+  color: white;
   border: 0px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.096); 
+}
+
+.video_button:disabled{
+  background-color: #00000075;
+  color: white;
 }
 
 .button:hover, .video_button:hover{

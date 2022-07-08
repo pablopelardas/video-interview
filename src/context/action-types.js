@@ -2,3 +2,5 @@ export const SET_QUESTIONS = 'SET_QUESTIONS';
 export const SET_IS_ANSWERED = 'SET_IS_ANSWERED';
 export const SET_STEP = 'SET_STEP';
 export const SET_VIDEO_ANSWER = 'SET_VIDEO_ANSWER';
+export const SET_LOADING = 'SET_LOADING';
+export const SET_RECORDING = 'SET_RECORDING';

@@ -12,7 +12,6 @@ const PrimaryButton = React.forwardRef((props,ref) => {
         Regrabar: <CachedRoundedIcon className={s.icon} fontSize='large'/>,
         Detener: <StopRoundedIcon className={s.icon} fontSize='large'/>,
     };
-    console.log(icon, video);
     return <button ref={ref || null} className={video ? s.video_button : s.button} onClick={onClick} disabled={disabled || false}>{video ? videoButton[icon] : text}</button>; 
 });
 

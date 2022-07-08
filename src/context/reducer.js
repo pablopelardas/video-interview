@@ -1,11 +1,13 @@
 import { questionsMock, steps } from '../constants';
-import { SET_QUESTIONS, SET_STEP, SET_IS_ANSWERED, SET_VIDEO_ANSWER } from './action-types';
+import { SET_QUESTIONS, SET_STEP, SET_IS_ANSWERED, SET_VIDEO_ANSWER, SET_LOADING, SET_RECORDING } from './action-types';
 
 export const initialState = {
     questions: questionsMock,
     actualStep: steps.MainView,
     isLastQuestion: false,
     isFirstQuestion: false,
+    loading: false,
+    recording: false,
 };
 
 
@@ -91,10 +93,21 @@ export const reducer = (state, action) => {
                         ...question,
                         answer: action.payload.answer,
                         isAnswered: action.payload.isAnswered,
+                        duration: action.payload.duration,
                     };
                 }
                 return question;
             })
+        };
+    case SET_LOADING:
+        return {
+            ...state,
+            loading: action.payload,
+        };
+    case SET_RECORDING:
+        return {
+            ...state,
+            recording: action.payload,
         };
     default:
         return state;

@@ -3,24 +3,35 @@ import s from './VideoRecorder.module.css';
 import useWebCam from '../../hooks/useWebCam';
 import {AppContext} from '../../context/AppContext.jsx';
 import PrimaryButton from '../PrimaryButton/PrimaryButton.jsx';
+import { Skeleton } from '@mui/material';
+import { getFormattedTime } from '../../utils/getFormattedTime';
 
 const VideoRecorder = () => {
     const [state] = useContext(AppContext);
     const actualQuestion = state.questions[state.actualStep-1];
-    const {buttonRef, videoRef, recordedRef, error, handleButtonClick, buttonState} = useWebCam();
+    const {buttonRef, videoRef, error, handleButtonClick, buttonState, replay, timer, isRecording} = useWebCam();
 
-    return (
-        <section className={s.video_container}>
+    React.useEffect(() => {}, [state.loading]);
+    React.useEffect(() => {if (!actualQuestion?.isAnswered) videoRef.current.muted = true;},[actualQuestion?.isAnswered]);
+
+    const content = state.loading
+        ? <Skeleton className={s.skeleton} variant="rectangular" />
+        : (
             <div className={s.video}>
-                {
-                    actualQuestion?.isAnswered
-                        ? <video ref={recordedRef} />
-                        : <video ref={videoRef} autoPlay muted />     
-                }
+                <div className={s.timer_container}>
+                    <span className={s.timer}>{isRecording ? `${getFormattedTime(timer)}:2:00` : `${getFormattedTime(timer)}:${getFormattedTime(actualQuestion.duration)}`}</span>
+                    {isRecording && <span className={s.recording_circle}></span>}
+                </div>
+                <video ref={videoRef} autoPlay muted onClick={replay} />  
                 <div className={s.buttons_container}>
                     <PrimaryButton ref={buttonRef} onClick={handleButtonClick} video={true} icon={buttonState}/>
                 </div>
             </div>
+        );
+
+    return (
+        <section className={s.video_container}>
+            {content}
             {error && <p>{error.message}</p>}
         </section>
     );    

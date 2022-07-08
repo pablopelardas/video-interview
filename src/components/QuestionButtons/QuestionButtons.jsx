@@ -18,8 +18,8 @@ const QuestionButtons = () => {
   
     return (
         <div className={s.buttons_container}>
-            <PrimaryButton onClick={prevView} text={!state.isFirstQuestion ? 'Previous' : 'Start'}/>
-            <PrimaryButton onClick={nextView} text={!state.isLastQuestion ? 'Next' : 'End'}/>
+            <PrimaryButton onClick={prevView} disabled={state.recording} text={!state.isFirstQuestion ? 'Previous' : 'Start'}/>
+            <PrimaryButton onClick={nextView} disabled={state.recording} text={!state.isLastQuestion ? 'Next' : 'End'}/>
         </div>
     );
 };

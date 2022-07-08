@@ -16,7 +16,7 @@ const QuestionView = () => {
 
     return (
         <section className={s.question_view_container}>
-            <PrimaryButton onClick={goToMainView} text={'Main View'}/>
+            <PrimaryButton disabled={state.recording} onClick={goToMainView} text={'Main View'}/>
             <VideoRecorder />            
             <QuestionButtons/>
         </section>
