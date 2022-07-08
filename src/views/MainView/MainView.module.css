@@ -2,22 +2,20 @@
   display: flex;
   place-self: center;
   flex-direction: column;
-  margin: 10vh;
   align-items: center;
   justify-content: center;
   height: auto;
   min-height: 80vh;
   width: 80vw;
-  padding: 20px 0;
+  padding: 50px 0;
   background-color: #0000002e;
 }
 
 .card_container{
-  margin-top: 50px;
   display: flex;
   justify-content: center;
   padding: 20px;
-  gap: 30px;
+  gap: 50px;
   width: 80%;
   flex-wrap: wrap;
   height: auto;
@@ -34,7 +32,14 @@
 }
 
 .instructions{
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #ffffff;
   margin-top: 50px;
+  border: 1px solid #fa8072a3;
+  padding: 10px;
+  max-width: 700px;
+}
+
+.instructions span{
+  color: #ffa59a;
 }

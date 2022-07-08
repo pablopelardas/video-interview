@@ -50,12 +50,11 @@ const useWebCam = () => {
         await getStream().then(() => {
             dispatch({type: SET_LOADING, payload: false});
             if (actualQuestion?.isAnswered) play();
-            buttonRef.current.disabled = false;
+            if (buttonRef.current) buttonRef.current.disabled = false;
         });
     };
 
     const handleButtonClick = () => {
-        console.log('click');
         if (!buttonRef.current) return;
         if (buttonState === 'Regrabar'){
             dispatch({type: SET_VIDEO_ANSWER, payload: {id: state.actualStep, isAnswered: false, answer: ''}});
@@ -81,7 +80,6 @@ const useWebCam = () => {
         // await prepareStream();
         if (isRecording) return;
         if (!streamRef.current) return;
-        console.log('llego hasta aca');
         if (!videoRef.current) return;
         videoRef.current.srcObject = streamRef.current;
         videoRef.current.controls = false;
@@ -128,6 +126,12 @@ const useWebCam = () => {
         dispatch({type: SET_LOADING, payload: true});
         prepareStream();
         videoRef.current.srcObject = streamRef.current;
+        return () => {
+            if (streamRef.current) streamRef.current.getTracks().forEach(track => track.stop());
+            if (streamRecorderRef.current) streamRecorderRef.current.stop();
+            if (recordTimerRef.current) clearInterval(recordTimerRef.current);
+            if (playingRef.current) clearInterval(playingRef.current);
+        };
     },[]);
 
     useEffect(() => {
@@ -155,11 +159,6 @@ const useWebCam = () => {
             recordTimerRef.current = setInterval(() => {
                 setTimer(timer => timer + 1);
             }, 1000);
-            if (timer === 120){
-                stopRecording();
-                setTimer(0);
-                clearInterval(recordTimerRef.current);
-            }
         }
         if (!isRecording) {
             dispatch({type: SET_RECORDING, payload: false});
@@ -168,6 +167,16 @@ const useWebCam = () => {
         }
         return () => clearInterval(recordTimerRef.current);
     },[isRecording]);
+
+    useEffect(() => {
+        if (isRecording){
+            if (timer >= 120){
+                stopRecording();
+                setTimer(0);
+                clearInterval(recordTimerRef.current);
+            }
+        }
+    }, [timer]);
 
     useEffect(() => {
         if (isPlaying) {

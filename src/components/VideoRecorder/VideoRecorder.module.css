@@ -2,7 +2,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 30px;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -21,6 +20,7 @@
   height: auto;
   position: relative;
   background-color: rgb(0, 0, 0);
+  border-radius: 10px 10px 0px 0px;
 }
 
 .video video {
@@ -41,7 +41,7 @@
 
 .skeleton{
   min-width: 350px;
-  min-height: 500px;
+  min-height: 600px;
   width: 50%;
   height: auto;
 }
@@ -52,13 +52,16 @@
 
 .timer_container{
   position: absolute;
+  padding-right: 7px;
   top: 2%;
   right: 2%;
   display: flex;
   justify-content: end;
   align-items: center;
-  width: 100%;
+  width: min-content;
+  border-radius: 5px;
   height: auto;
+  background-color: #000000;
 
 }
 
@@ -66,7 +69,6 @@
   font-size: 2rem;
   padding: 10px;
   border-radius: 5px;
-  background-color: #000000;
   color: white;
   border: 0px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.096);  
@@ -76,11 +78,28 @@
   display: block;
   background-color: red;
   border-radius: 50%;
-  width: 22px;
-  height: 22px;
+  width: 23px;
+  height: 23px;
+  padding: 10px;
   animation: blinker 0.75s cubic-bezier(.5, 0, 1, 1) infinite alternate; 
 }
 @keyframes blinker {  
   from { opacity: 1; }
   to { opacity: 0; }
+}
+
+.question{
+  width: 50%;
+  min-width: 350px;
+  min-height: 50px;
+  height: auto;
+  border-radius: 0px 0px 10px 10px;
+  background-color: #000000d9;
+  display: flex;
+  font-size: 2rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 5px;
+  color: white;
 }

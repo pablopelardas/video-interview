@@ -17,21 +17,27 @@ const VideoRecorder = () => {
     const content = state.loading
         ? <Skeleton className={s.skeleton} variant="rectangular" />
         : (
-            <div className={s.video}>
-                <div className={s.timer_container}>
-                    <span className={s.timer}>{isRecording ? `${getFormattedTime(timer)}:2:00` : `${getFormattedTime(timer)}:${getFormattedTime(actualQuestion.duration)}`}</span>
-                    {isRecording && <span className={s.recording_circle}></span>}
+            <>
+                <div className={s.video}>
+                    <div className={s.timer_container}>
+                        <span className={s.timer}>{isRecording ? `${getFormattedTime(timer)}:2:00` : `${getFormattedTime(timer)}:${getFormattedTime(actualQuestion.duration)}`}</span>
+                        {isRecording && <span className={s.recording_circle}></span>}
+                    </div>
+                    <video ref={videoRef} autoPlay muted onClick={replay} />  
+                    <div className={s.buttons_container}>
+                        <PrimaryButton ref={buttonRef} onClick={handleButtonClick} video={true} icon={buttonState}/>
+                    </div>
                 </div>
-                <video ref={videoRef} autoPlay muted onClick={replay} />  
-                <div className={s.buttons_container}>
-                    <PrimaryButton ref={buttonRef} onClick={handleButtonClick} video={true} icon={buttonState}/>
+                <div className={s.question}>
+                    {actualQuestion.message}
                 </div>
-            </div>
+            </>
         );
 
     return (
         <section className={s.video_container}>
             {content}
+
             {error && <p>{error.message}</p>}
         </section>
     );    
