@@ -107,11 +107,12 @@ const useWebCam = () => {
     const play = async () => {
         const blob = new Blob(actualQuestion.answer, {type: 'video/webm'});
         if (!videoRef.current) return;
-        videoRef.current.src = null;
         videoRef.current.srcObject = null;
         videoRef.current.src = URL.createObjectURL(blob);
-        videoRef.current.controls= false;
-        videoRef.current.muted = false;
+        videoRef.current.autoplay = true;
+        videoRef.current.controls = true;
+        videoRef.current.muted = true;
+        videoRef.current.loop = true;
         setIsPlaying(true);
         setTimer(0);
         videoRef.current.play();
