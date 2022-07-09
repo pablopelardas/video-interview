@@ -150,7 +150,7 @@ const useWebCam = () => {
 
     useEffect(() => {
         const int = setInterval(() => {
-            if (actualQuestion?.isAnswered) {
+            if (actualQuestion?.isAnswered && !state.loading) {
                 clearInterval(int);
                 play();
             }
