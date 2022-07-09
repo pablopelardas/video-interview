@@ -110,8 +110,8 @@ const useWebCam = () => {
         videoRef.current.src = null;
         videoRef.current.srcObject = null;
         videoRef.current.src = URL.createObjectURL(blob);
-        videoRef.current.controls= false;
-        videoRef.current.muted = true;
+        videoRef.current.controls= true;
+        videoRef.current.muted = false;
         setIsPlaying(true);
         setTimer(0);
         videoRef.current.play();
