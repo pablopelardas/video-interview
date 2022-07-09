@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef, useContext} from 'react';
 import {AppContext} from '../context/AppContext.jsx';
-import { SET_LOADING, SET_RECORDING, SET_VIDEO_ANSWER } from '../context/action-types.js';
+import { SET_LOADING, SET_RECORDING, SET_STEP, SET_VIDEO_ANSWER } from '../context/action-types.js';
  
 
 
@@ -26,11 +26,12 @@ const useWebCam = () => {
         const gotStream = (stream) =>{
             streamRef.current = stream;
             if(videoRef.current){
+                console.log('hay videoRef');
                 videoRef.current.srcObject = stream;
                 videoRef.current.controls = false;
                 videoRef.current.muted = true;
                 videoRef.current.play();
-            } 
+            }else console.log('no hay videoref');
         };
 
         const getStream = async () => {
@@ -124,7 +125,6 @@ const useWebCam = () => {
     };
 
     useEffect(() => {
-        videoRef.current.srcObject = streamRef.current;
         dispatch({type: SET_LOADING, payload: true});
         prepareStream();
         videoRef.current.srcObject = streamRef.current;
