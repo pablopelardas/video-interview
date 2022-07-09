@@ -50,7 +50,6 @@ const useWebCam = () => {
             }
         };
         await getStream();
-        
         dispatch({type: SET_LOADING, payload: false});
         if (actualQuestion?.isAnswered) play();
         if (buttonRef.current) buttonRef.current.disabled = false;
@@ -107,10 +106,7 @@ const useWebCam = () => {
 
     const play = () => {
         const blob = new Blob(actualQuestion.answer, {type: 'video/webm'});
-        console.log('llega hasta antes del return');
-        console.log(videoRef.current);
         if (!videoRef.current) return;
-        console.log('pasa el return');
         videoRef.current.srcObject = null;
         videoRef.current.src = URL.createObjectURL(blob);
         videoRef.current.autoplay = true;
@@ -128,6 +124,7 @@ const useWebCam = () => {
     };
 
     useEffect(() => {
+        videoRef.current.srcObject = streamRef.current;
         dispatch({type: SET_LOADING, payload: true});
         prepareStream();
         videoRef.current.srcObject = streamRef.current;
