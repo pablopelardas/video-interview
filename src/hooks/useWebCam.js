@@ -49,11 +49,12 @@ const useWebCam = () => {
                 setError(e);
             }
         };
-        await getStream().then(() => {
-            dispatch({type: SET_LOADING, payload: false});
-            if (actualQuestion?.isAnswered) play();
-            if (buttonRef.current) buttonRef.current.disabled = false;
-        });
+        await getStream();
+        
+        dispatch({type: SET_LOADING, payload: false});
+        if (actualQuestion?.isAnswered) play();
+        if (buttonRef.current) buttonRef.current.disabled = false;
+        
     };
 
     const handleButtonClick = () => {
@@ -104,9 +105,10 @@ const useWebCam = () => {
         streamRecorderRef.current = null;
     };
 
-    const play = async () => {
+    const play = () => {
         const blob = new Blob(actualQuestion.answer, {type: 'video/webm'});
         console.log('llega hasta antes del return');
+        console.log(videoRef.current);
         if (!videoRef.current) return;
         console.log('pasa el return');
         videoRef.current.srcObject = null;
@@ -125,15 +127,10 @@ const useWebCam = () => {
         videoRef.current.play();
     };
 
-    const attempStart = () => {
-        videoRef && videoRef.current && videoRef.current.play().catch(e => console.error(`Error playing video: ${e}`));
-    };
-
     useEffect(() => {
         dispatch({type: SET_LOADING, payload: true});
         prepareStream();
         videoRef.current.srcObject = streamRef.current;
-        attempStart();
         return () => {
             if (streamRef.current) streamRef.current.getTracks().forEach(track => track.stop());
             if (streamRecorderRef.current) streamRecorderRef.current.stop();
