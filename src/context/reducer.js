@@ -4,6 +4,7 @@ import { SET_QUESTIONS, SET_STEP, SET_IS_ANSWERED, SET_VIDEO_ANSWER, SET_LOADING
 export const initialState = {
     questions: questionsMock,
     actualStep: steps.MainView,
+    prevStep: steps.MainView,
     isLastQuestion: false,
     isFirstQuestion: false,
     loading: false,
@@ -23,18 +24,21 @@ export const reducer = (state, action) => {
             if (action.payload === steps.QuestionView.length){
                 return {
                     ...state,
+                    prevStep: state.actualStep,
                     actualStep: action.payload,
                     isLastQuestion: true,
                 };
             }else if(action.payload === steps.QuestionView[0]){
                 return {
                     ...state,
+                    prevStep: state.actualStep,
                     actualStep: action.payload,
                     isFirstQuestion: true,
                 };
             }
             return {
                 ...state,
+                prevStep: state.actualStep,
                 actualStep: action.payload,
                 isFirstQuestion: false,
                 isLastQuestion: false,
@@ -44,6 +48,7 @@ export const reducer = (state, action) => {
             if (state.actualStep + 1 === steps.QuestionView.length) {
                 return {
                     ...state,
+                    prevStep: state.actualStep,
                     actualStep: state.actualStep + 1,
                     isLastQuestion: true,
                     isFirstQuestion: false,
@@ -51,6 +56,7 @@ export const reducer = (state, action) => {
             }
             return {
                 ...state,
+                prevStep: state.actualStep,
                 actualStep: state.actualStep + 1,
                 isLastQuestion: false,
                 isFirstQuestion: false,

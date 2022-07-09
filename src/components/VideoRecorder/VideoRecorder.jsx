@@ -20,7 +20,7 @@ const VideoRecorder = () => {
                     <span className={s.timer}>{isRecording ? `${getFormattedTime(timer)} / 02:00` : `${getFormattedTime(timer)} / ${getFormattedTime(actualQuestion.duration)}`}</span>
                     {isRecording && <span className={s.recording_circle}></span>}
                 </div>
-                <video ref={videoRef} muted autoPlay={'autoplay'} alt='video' onClick={replay} preload='auto'/>  
+                <video ref={videoRef} muted onClick={replay}/>  
                 <div className={s.buttons_container}>
                     <PrimaryButton ref={buttonRef} onClick={handleButtonClick} video={true} icon={buttonState}/>
                     {/* {(!isPlaying && actualQuestion.isAnswered) && <PrimaryButton ref={buttonRef} onClick={play} video={true} icon={'Grabar'}/>} */}
