@@ -106,13 +106,13 @@ const useWebCam = () => {
 
     const play = async () => {
         const blob = new Blob(actualQuestion.answer, {type: 'video/webm'});
+        console.log('llega hasta antes del return');
         if (!videoRef.current) return;
+        console.log('pasa el return');
         videoRef.current.srcObject = null;
         videoRef.current.src = URL.createObjectURL(blob);
         videoRef.current.autoplay = true;
-        videoRef.current.controls = true;
-        videoRef.current.muted = true;
-        videoRef.current.loop = true;
+        videoRef.current.muted = false;
         setIsPlaying(true);
         setTimer(0);
         videoRef.current.play();
@@ -125,10 +125,15 @@ const useWebCam = () => {
         videoRef.current.play();
     };
 
+    const attempStart = () => {
+        videoRef && videoRef.current && videoRef.current.play().catch(e => console.error(`Error playing video: ${e}`));
+    };
+
     useEffect(() => {
         dispatch({type: SET_LOADING, payload: true});
         prepareStream();
         videoRef.current.srcObject = streamRef.current;
+        attempStart();
         return () => {
             if (streamRef.current) streamRef.current.getTracks().forEach(track => track.stop());
             if (streamRecorderRef.current) streamRecorderRef.current.stop();
