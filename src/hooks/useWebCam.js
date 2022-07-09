@@ -110,7 +110,7 @@ const useWebCam = () => {
         videoRef.current.src = null;
         videoRef.current.srcObject = null;
         videoRef.current.src = URL.createObjectURL(blob);
-        videoRef.current.controls= true;
+        videoRef.current.controls= false;
         videoRef.current.muted = false;
         setIsPlaying(true);
         setTimer(0);
@@ -125,10 +125,11 @@ const useWebCam = () => {
     };
 
     useEffect(() => {
+        videoRef.current.autoplay = true;
+        videoRef.current.muted = true;
         dispatch({type: SET_LOADING, payload: true});
         prepareStream();
         videoRef.current.srcObject = streamRef.current;
-        videoRef.current.play();
         return () => {
             if (streamRef.current) streamRef.current.getTracks().forEach(track => track.stop());
             if (streamRecorderRef.current) streamRecorderRef.current.stop();
