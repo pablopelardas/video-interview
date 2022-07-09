@@ -28,6 +28,8 @@ const useWebCam = () => {
             if(videoRef.current){
                 videoRef.current.srcObject = stream;
                 videoRef.current.controls = false;
+                videoRef.current.muted = true;
+                videoRef.current.play();
             } 
         };
 

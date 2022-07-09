@@ -20,7 +20,7 @@ const VideoRecorder = () => {
             <>
                 <div className={s.video}>
                     <div className={s.timer_container}>
-                        <span className={s.timer}>{isRecording ? `${getFormattedTime(timer)}:2:00` : `${getFormattedTime(timer)}:${getFormattedTime(actualQuestion.duration)}`}</span>
+                        <span className={s.timer}>{isRecording ? `${getFormattedTime(timer)} / 02:00` : `${getFormattedTime(timer)} / ${getFormattedTime(actualQuestion.duration)}`}</span>
                         {isRecording && <span className={s.recording_circle}></span>}
                     </div>
                     <video ref={videoRef} autoPlay muted onClick={replay} />  
