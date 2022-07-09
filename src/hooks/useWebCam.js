@@ -127,6 +127,7 @@ const useWebCam = () => {
     useEffect(() => {
         dispatch({type: SET_LOADING, payload: true});
         prepareStream();
+        if (actualQuestion?.isAnswered) replay();
         videoRef.current.srcObject = streamRef.current;
         return () => {
             if (streamRef.current) streamRef.current.getTracks().forEach(track => track.stop());
