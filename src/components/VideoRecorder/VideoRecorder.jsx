@@ -3,7 +3,6 @@ import s from './VideoRecorder.module.css';
 import useWebCam from '../../hooks/useWebCam';
 import {AppContext} from '../../context/AppContext.jsx';
 import PrimaryButton from '../PrimaryButton/PrimaryButton.jsx';
-import { Skeleton } from '@mui/material';
 import { getFormattedTime } from '../../utils/getFormattedTime';
 
 const VideoRecorder = () => {
@@ -14,30 +13,22 @@ const VideoRecorder = () => {
     React.useEffect(() => {}, [state.loading]);
     React.useEffect(() => {if (!actualQuestion?.isAnswered) videoRef.current.muted = true;},[actualQuestion?.isAnswered]);
 
-    const content = state.loading
-        ? <Skeleton className={s.skeleton} variant="rectangular" />
-        : (
-            <>
-                <div className={s.video}>
-                    <div className={s.timer_container}>
-                        <span className={s.timer}>{isRecording ? `${getFormattedTime(timer)} / 02:00` : `${getFormattedTime(timer)} / ${getFormattedTime(actualQuestion.duration)}`}</span>
-                        {isRecording && <span className={s.recording_circle}></span>}
-                    </div>
-                    <video ref={videoRef} muted autoPlay={'autoplay'} alt='video' onClick={replay} preload='auto'/>  
-                    <div className={s.buttons_container}>
-                        <PrimaryButton ref={buttonRef} onClick={handleButtonClick} video={true} icon={buttonState}/>
-                        {/* {(!isPlaying && actualQuestion.isAnswered) && <PrimaryButton ref={buttonRef} onClick={play} video={true} icon={'Grabar'}/>} */}
-                    </div>
-                </div>
-                <div className={s.question}>
-                    {actualQuestion.message}
-                </div>
-            </>
-        );
-
     return (
         <section className={s.video_container}>
-            {content}
+            <div className={s.video}>
+                <div className={s.timer_container}>
+                    <span className={s.timer}>{isRecording ? `${getFormattedTime(timer)} / 02:00` : `${getFormattedTime(timer)} / ${getFormattedTime(actualQuestion.duration)}`}</span>
+                    {isRecording && <span className={s.recording_circle}></span>}
+                </div>
+                <video ref={videoRef} muted autoPlay={'autoplay'} alt='video' onClick={replay} preload='auto'/>  
+                <div className={s.buttons_container}>
+                    <PrimaryButton ref={buttonRef} onClick={handleButtonClick} video={true} icon={buttonState}/>
+                    {/* {(!isPlaying && actualQuestion.isAnswered) && <PrimaryButton ref={buttonRef} onClick={play} video={true} icon={'Grabar'}/>} */}
+                </div>
+            </div>
+            <div className={s.question}>
+                {actualQuestion.message}
+            </div>
 
             {error && <p>{error.message}</p>}
         </section>

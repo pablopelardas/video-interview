@@ -25,13 +25,20 @@ const useWebCam = () => {
     const prepareStream = async () => {
         const gotStream = (stream) =>{
             streamRef.current = stream;
-            if(videoRef.current){
-                console.log('hay videoRef');
-                videoRef.current.srcObject = stream;
-                videoRef.current.controls = false;
-                videoRef.current.muted = true;
-                videoRef.current.play();
-            }else console.log('no hay videoref');
+            const int = setInterval(() => {
+                console.log('interval');
+                if (videoRef.current) {
+                    clearInterval(int);
+                    console.log('hay videoRef');
+                    videoRef.current.srcObject = stream;
+                    videoRef.current.controls = false;
+                    videoRef.current.muted = true;
+                    videoRef.current.play();
+                    dispatch({type: SET_LOADING, payload: false});
+                    if (actualQuestion?.isAnswered) play();
+                    if (buttonRef.current) buttonRef.current.disabled = false;
+                }
+            }, 1000);
         };
 
         const getStream = async () => {
@@ -51,10 +58,6 @@ const useWebCam = () => {
             }
         };
         await getStream();
-        dispatch({type: SET_LOADING, payload: false});
-        if (actualQuestion?.isAnswered) play();
-        if (buttonRef.current) buttonRef.current.disabled = false;
-        
     };
 
     const handleButtonClick = () => {
