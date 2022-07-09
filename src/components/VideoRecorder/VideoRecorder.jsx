@@ -9,7 +9,7 @@ import { getFormattedTime } from '../../utils/getFormattedTime';
 const VideoRecorder = () => {
     const [state] = useContext(AppContext);
     const actualQuestion = state.questions[state.actualStep-1];
-    const {buttonRef, videoRef, error, handleButtonClick, buttonState, replay, timer, isRecording, isPlaying} = useWebCam();
+    const {buttonRef, videoRef, error, handleButtonClick, buttonState, replay, timer, isRecording} = useWebCam();
 
     React.useEffect(() => {}, [state.loading]);
     React.useEffect(() => {if (!actualQuestion?.isAnswered) videoRef.current.muted = true;},[actualQuestion?.isAnswered]);
@@ -23,10 +23,10 @@ const VideoRecorder = () => {
                         <span className={s.timer}>{isRecording ? `${getFormattedTime(timer)} / 02:00` : `${getFormattedTime(timer)} / ${getFormattedTime(actualQuestion.duration)}`}</span>
                         {isRecording && <span className={s.recording_circle}></span>}
                     </div>
-                    <video ref={videoRef} autoPlay muted onClick={replay} />  
+                    <video ref={videoRef} autoPlay muted loop playsInline alt='video' onClick={replay} />  
                     <div className={s.buttons_container}>
                         <PrimaryButton ref={buttonRef} onClick={handleButtonClick} video={true} icon={buttonState}/>
-                        {(!isPlaying && actualQuestion.isAnswered) && <PrimaryButton ref={buttonRef} onClick={replay} video={true} icon={'Grabar'}/>}
+                        {/* {(!isPlaying && actualQuestion.isAnswered) && <PrimaryButton ref={buttonRef} onClick={play} video={true} icon={'Grabar'}/>} */}
                     </div>
                 </div>
                 <div className={s.question}>

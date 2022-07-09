@@ -125,8 +125,6 @@ const useWebCam = () => {
     };
 
     useEffect(() => {
-        videoRef.current.autoplay = true;
-        videoRef.current.muted = true;
         dispatch({type: SET_LOADING, payload: true});
         prepareStream();
         videoRef.current.srcObject = streamRef.current;
@@ -196,7 +194,7 @@ const useWebCam = () => {
         }
     },[isPlaying]);
 
-    return {buttonRef, videoRef, error, handleButtonClick, buttonState, replay, prepareStream, timer, isRecording, isPlaying};
+    return {buttonRef, videoRef, error, handleButtonClick, buttonState, replay, prepareStream, timer, isRecording, isPlaying, play};
 };
 
 export default useWebCam;
