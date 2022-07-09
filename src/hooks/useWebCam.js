@@ -196,7 +196,7 @@ const useWebCam = () => {
         }
     },[isPlaying]);
 
-    return {buttonRef, videoRef, error, handleButtonClick, buttonState, replay, prepareStream, timer, isRecording};
+    return {buttonRef, videoRef, error, handleButtonClick, buttonState, replay, prepareStream, timer, isRecording, isPlaying};
 };
 
 export default useWebCam;

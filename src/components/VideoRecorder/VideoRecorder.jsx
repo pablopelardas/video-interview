@@ -9,7 +9,7 @@ import { getFormattedTime } from '../../utils/getFormattedTime';
 const VideoRecorder = () => {
     const [state] = useContext(AppContext);
     const actualQuestion = state.questions[state.actualStep-1];
-    const {buttonRef, videoRef, error, handleButtonClick, buttonState, replay, timer, isRecording} = useWebCam();
+    const {buttonRef, videoRef, error, handleButtonClick, buttonState, replay, timer, isRecording, isPlaying} = useWebCam();
 
     React.useEffect(() => {}, [state.loading]);
     React.useEffect(() => {if (!actualQuestion?.isAnswered) videoRef.current.muted = true;},[actualQuestion?.isAnswered]);
@@ -26,6 +26,7 @@ const VideoRecorder = () => {
                     <video ref={videoRef} autoPlay muted onClick={replay} />  
                     <div className={s.buttons_container}>
                         <PrimaryButton ref={buttonRef} onClick={handleButtonClick} video={true} icon={buttonState}/>
+                        {(!isPlaying && actualQuestion.isAnswered) && <PrimaryButton ref={buttonRef} onClick={replay} video={true} icon={'Grabar'}/>}
                     </div>
                 </div>
                 <div className={s.question}>
